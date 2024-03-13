@@ -12,7 +12,7 @@ jobs:
 
     - name: Install Jekyll bundler
       run: |
-        gem install jekyll bundler
+        gem install --user jekyll bundler
     
     - name: Install dependencies
       run: bundle install
