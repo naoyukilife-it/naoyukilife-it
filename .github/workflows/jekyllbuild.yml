@@ -1,4 +1,4 @@
-name: Hello World
+name: jekyll build
 
 on:
   push:
@@ -8,17 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Install Jekyll bundler
+    - uses: actions/checkout@v3
+    - name: Build the site in the jekyll/builder container
       run: |
-        gem install --user jekyll
-
-    - name: Build Jekyll site
-      run: jekyll build
-
-    - name: Deploy Jekyll site
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        publish_dir: _site
-        force_orphan: true
+        docker run \
+        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
+        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
